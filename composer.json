@@ -1,0 +1,10 @@
+{
+  "require": {
+    "illuminate/database": "7.x-dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
