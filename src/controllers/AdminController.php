@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
-use App\Models\Message;
+use App\Models\Eloquent\User;
+use App\Models\Eloquent\Message;
 
 class AdminController extends BaseController
 {

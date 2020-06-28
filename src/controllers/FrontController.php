@@ -2,9 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\DB;
-use App\Models\User;
-use App\Models\Message;
+use App\Models\Eloquent\User;
+use App\Models\Eloquent\Message;
 
 class FrontController extends BaseController
 {
@@ -35,10 +34,9 @@ class FrontController extends BaseController
         $model->add($data);
 
         $email = $data['email'];
-        $passwordInput = $model->getPasswordHash($data['password']);
 
-        $user = $model->get($email, $passwordInput);
-        $_SESSION['user_id'] = $user['id'];
+        $user = $model->get($email);
+        $_SESSION['user_id'] = $user->id;
         header('Location: /message');
 
         exit;
@@ -46,24 +44,23 @@ class FrontController extends BaseController
 
     /**
      * авторизация пользователя
+     *
      * @param array $data
      */
     public function login(array $data)
     {
         $model = new User();
 
-        $email = $data['email'];
-        $passwordInput = $model->getPasswordHash($data['password']);
+        $password = $model->getPasswordHash($data['password']);
+        $user = $model->get($data['email']);
 
-        $user = $model->get($email, $passwordInput);
-
-        if (!$user) {
+        if ($user->email != $data['email'] || $password != $user->password) {
             echo 'Неверный логин или пароль';
             $this->render('login');
             exit();
         }
 
-        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_id'] = $user->id;
         header('Location: /message');
 
         exit();

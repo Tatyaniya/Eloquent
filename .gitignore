@@ -1,3 +1,5 @@
 .idea/
 public/images/*.*
-src/models/Config.php
+src/models/Eloquent/Config.php
+composer.phar
+vendor

@@ -1,14 +1,19 @@
 <?php
 
-include __DIR__ . "/../src/models/Config.php";
-include __DIR__ . "/../src/models/DB.php";
-include __DIR__ . "/../src/models/User.php";
-include __DIR__ . "/../src/models/Message.php";
-include __DIR__ . "/../src/controllers/BaseController.php";
-include __DIR__ . "/../src/controllers/FrontController.php";
-include __DIR__ . "/../src/controllers/AdminController.php";
-include __DIR__ . "/../vendor/autoload.php.php";
+require "../vendor/autoload.php";
+include __DIR__ . "/../src/models/Eloquent/Config.php";
+include __DIR__ . "/../src/models/Eloquent/DB.php";
+//include __DIR__ . "/../src/models/Eloquent/User.php";
+//include __DIR__ . "/../src/models/Eloquent/Message.php";
+//include __DIR__ . "/../src/controllers/BaseController.php";
+//include __DIR__ . "/../src/controllers/FrontController.php";
+//include __DIR__ . "/../src/controllers/AdminController.php";
+
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 session_start();
+
+
 
 if (!empty($_POST) && strpos($_SERVER['REQUEST_URI'], '/login') !== false) {
     $controller = new \App\Controllers\FrontController();
@@ -64,4 +69,6 @@ if (strpos($_SERVER['REQUEST_URI'], '/') !== false) {
     return 0;
 }
 
-
+echo '<pre>';
+$capsule = new Capsule;
+print_r($capsule->getConnection()->getQueryLog());

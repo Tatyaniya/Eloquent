@@ -2,30 +2,26 @@
 
 namespace App\Models;
 
-use \IIlluminate\Database\Eloquent\Model;
+use PDO;
 
-class User extends \IIlluminate\Database\Eloquent\Model
+class User
 {
-    public $table = 'users';
+    /**
+     * @var mixed
+     */
+    public $name;
+    protected $id;
+    protected $date;
+    protected $email;
+    protected $password;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'create_at'
-    ];
-
-    // определяем отношение с постами - 1 ко многим
-    public function messages()
+    /**
+     * @return mixed
+     */
+    public function getUserId()
     {
-        return $this->hasMany('App\Models', 'user_id', 'id');
+        return $_SESSION['user_id'];
     }
-
-
-
-
-
-
 
     /**
      * получаем имя текущего пользователя
@@ -69,32 +65,32 @@ class User extends \IIlluminate\Database\Eloquent\Model
         ]);
     }
 
-    /**
-     * получить пользоввтеля из базы
-     * @param $email
-     * @param $passwordInput
-     * @return mixed
-     */
-    public function get($email, $passwordInput)
-    {
-        $pdo = new DB();
+//    /**
+//     * получить пользоввтеля из базы
+//     * @param $email
+//     * @param $passwordInput
+//     * @return mixed
+//     */
+//    public function get($email, $passwordInput)
+//    {
+//        $pdo = new DB();
+//
+//        $query = "SELECT * FROM users WHERE email = :email AND password = :password";
+//        $result = $pdo->connect()->prepare($query);
+//        $result->execute([
+//            'email' => $email,
+//            'password' => $passwordInput
+//        ]);
+//        return $result->fetch(PDO::FETCH_ASSOC);
+//    }
 
-        $query = "SELECT * FROM users WHERE email = :email AND password = :password";
-        $result = $pdo->connect()->prepare($query);
-        $result->execute([
-            'email' => $email,
-            'password' => $passwordInput
-        ]);
-        return $result->fetch(PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * генерация хеша пароля
-     * @param $password
-     * @return string
-     */
-    public function getPasswordHash($password)
-    {
-        return $passwordHash = sha1($password . '.sdfifao38vj,');
-    }
+//    /**
+//     * генерация хеша пароля
+//     * @param $password
+//     * @return string
+//     */
+//    public function getPasswordHash($password)
+//    {
+//        return $passwordHash = sha1($password . '.sdfifao38vj,');
+//    }
 }

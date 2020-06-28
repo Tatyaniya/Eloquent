@@ -1,32 +1,11 @@
 <?php
 
 namespace App\Models;
-use IIlluminate\Database\Eloquent\Model;
 
-class Message extends IIlluminate\Database\Eloquent\Model
+use PDO;
+
+class Message
 {
-    public $table = 'messages';
-    protected $primaryKey = 'id';
-    protected $fillable = [
-        'user_id',
-        'text',
-        'image',
-        'create_at'
-    ];
-
-    public function userdata()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-
-
-
-
-
-
-
-
     protected $id;
     protected $image;
     protected $text;
