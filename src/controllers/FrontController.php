@@ -34,8 +34,8 @@ class FrontController extends BaseController
         $model->add($data);
 
         $email = $data['email'];
-
         $user = $model->get($email);
+
         $_SESSION['user_id'] = $user->id;
         header('Location: /message');
 
@@ -74,10 +74,11 @@ class FrontController extends BaseController
 
         $isAdmin = ($_SESSION['user_id'] == ADMIN);
 
-        $info = array_reverse($this->getAllMessages());
+        echo 'blog';
+        //$info = array_reverse($this->getAllMessages());
 
         $this->render('blog', [
-            'items' => $info,
+            //'items' => $info,
             'is_admin' => $isAdmin
         ]);
 

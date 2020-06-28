@@ -132,21 +132,21 @@ class Message
         return sha1(microtime(1) . mt_rand(1, 100000000)) . '.jpg';
     }
 
-    /**
-     * удалить сообщение из базы
-     * @param $id
-     * @return mixed
-     */
-    public function delete($id)
-    {
-        $pdo = new DB();
-        $sql = "DELETE FROM messages WHERE id = :id";
-
-        $result = $pdo->connect()->prepare($sql);
-        $result->execute([
-            'id' => $id
-        ]);
-
-        return $result->fetch(PDO::FETCH_ASSOC);
-    }
+//    /**
+//     * удалить сообщение из базы
+//     * @param $id
+//     * @return mixed
+//     */
+//    public function delete($id)
+//    {
+//        $pdo = new DB();
+//        $sql = "DELETE FROM messages WHERE id = :id";
+//
+//        $result = $pdo->connect()->prepare($sql);
+//        $result->execute([
+//            'id' => $id
+//        ]);
+//
+//        return $result->fetch(PDO::FETCH_ASSOC);
+//    }
 }

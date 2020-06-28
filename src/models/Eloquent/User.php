@@ -2,7 +2,6 @@
 
 namespace App\Models\Eloquent;
 
-use App\Models\Eloquent\DB;
 use \Illuminate\Database\Eloquent\Model as Model;
 
 /**
@@ -45,14 +44,12 @@ class User extends Model
      */
     public function get($email)
     {
-//        $db = new DB();
-//        return $db->connect()->where('email', '=', $email)->first();
-        //return self::where('email', '=', $email)->first();
-
-        return self::select('*')->where('email', '=', $email)->first();
+        return self::where('email', '=', $email)->first();
     }
 
     /**
+     * получаем id пользователя
+     *
      * @param int $id
      * @return mixed
      */
@@ -63,6 +60,7 @@ class User extends Model
 
     /**
      * генерация хеша пароля
+     *
      * @param $password
      * @return string
      */
@@ -71,25 +69,28 @@ class User extends Model
         return $passwordHash = sha1($password . '.sdfifao38vj,');
     }
 
+
     /**
-     * Добавление пользователя в базу
+     * добавляем пользователя в базу
      *
      * @param array $data
-     * @param $password
      */
     public function add(array $data)
     {
-        $user = new User();
-        if($user->get($data['email'])) {
+        if($this->get($data['email'])) {
+            //var_dump($this->get($data['email'])->id);
             echo 'Пользователь с таким мылом уже существует';
             exit();
         }
 
-        $this->name = $data['name'];
-        $this->password = $this->getPasswordHash($data['password']);
-        $this->email = $data['email'];
-        $this->date = date('Y-m-d H:i:s');
+        $userData = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $this->getPasswordHash($data['password']),
+            'date' => date('Y-m-d H:i:s')
+        ];
 
+        $user = new User($userData);
         $user->save();
     }
 }

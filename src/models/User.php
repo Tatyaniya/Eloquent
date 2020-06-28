@@ -42,28 +42,28 @@ class User
         return $user['name'];
     }
 
-    /**
-     * добавить пользователя в базу
-     * @param array $data
-     */
-    public function add(array $data)
-    {
-        $pdo = new DB();
-
-        $this->name = $data['name'];
-        $this->password = $this->getPasswordHash($data['password']);
-        $this->email = $data['email'];
-        $this->date = date('Y-m-d H:i:s');
-
-        $query = ("INSERT INTO users (`name`, email, password, `time`) VALUES (:name, :email, :password, :time)");
-        $result = $pdo->connect()->prepare($query);
-        $result->execute([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-            'time' => date('Y-m-d H:i:s')
-        ]);
-    }
+//    /**
+//     * добавить пользователя в базу
+//     * @param array $data
+//     */
+//    public function add(array $data)
+//    {
+//        $pdo = new DB();
+//
+//        $this->name = $data['name'];
+//        $this->password = $this->getPasswordHash($data['password']);
+//        $this->email = $data['email'];
+//        $this->date = date('Y-m-d H:i:s');
+//
+//        $query = ("INSERT INTO users (`name`, email, password, `time`) VALUES (:name, :email, :password, :time)");
+//        $result = $pdo->connect()->prepare($query);
+//        $result->execute([
+//            'name' => $this->name,
+//            'email' => $this->email,
+//            'password' => $this->password,
+//            'time' => date('Y-m-d H:i:s')
+//        ]);
+//    }
 
 //    /**
 //     * получить пользоввтеля из базы

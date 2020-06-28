@@ -20,4 +20,20 @@ class Message extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function getMessages()
+    {
+        $pdo = new DB();
+
+        $messages = "SELECT * FROM messages";
+
+        $result = $pdo->connect()->prepare($messages);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function delete($id)
+    {
+        return User::find($id)->delete();
+    }
 }

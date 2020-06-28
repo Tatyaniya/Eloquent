@@ -1,10 +1,11 @@
 <?php
 
 require "../vendor/autoload.php";
-include __DIR__ . "/../src/models/Eloquent/Config.php";
+include __DIR__ . "/../src/models/Config.php";
+
+session_start();
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use App\Models\Eloquent\User as User;
 
 $capsule = new Capsule;
 
@@ -23,51 +24,20 @@ $capsule->setAsGlobal();
 
 $capsule->bootEloquent();
 
-$users = User::all();
-foreach($users as $user) {
-    echo $user->name . '<br>';
-}
-
-$user = new User();
-$us = $user->get('tatyana@gmail.com');
-$id = $user->get('tatyana@gmail.com');
-var_dump($id->password);
-
-include __DIR__ . "/../src/models/Eloquent/DB.php";
-
-session_start();
-
+//$users = User::all();
+//foreach($users as $user) {
+//    echo $user->name . '<br>';
+//}
+//
+//$user = new User();
+//$us = $user->get('tatyana@gmail.com');
+//$id = $user->get('tatyana@gmail.com');
+//var_dump($id->password);
 
 
 echo '<pre>';
-$capsule = new Capsule;
+
 print_r($capsule->getConnection()->getQueryLog());
-
-echo '<pre>';
-
-//
-//
-// function getPasswordHash($password)
-// {
-//     return $passwordHash = sha1($password . '.sdfifao38vj,');
-// }
-//
-// $ps = getPasswordHash(55555);
-// //var_dump($ps);
-//
-//
-//
-// $password = $user->getPasswordHash(55555);
-// $email = $user->get('tatyana@gmail.com')->id;
-//
-//         //var_dump($password);
-//         var_dump($email);
-//
-// function get($email)
-// {
-//     return User::where('email', '=', $email)->first();
-// }
-
 
 
 if (!empty($_POST) && strpos($_SERVER['REQUEST_URI'], '/login') !== false) {
