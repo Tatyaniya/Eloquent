@@ -2,16 +2,71 @@
 
 require "../vendor/autoload.php";
 include __DIR__ . "/../src/models/Eloquent/Config.php";
-include __DIR__ . "/../src/models/Eloquent/DB.php";
-//include __DIR__ . "/../src/models/Eloquent/User.php";
-//include __DIR__ . "/../src/models/Eloquent/Message.php";
-//include __DIR__ . "/../src/controllers/BaseController.php";
-//include __DIR__ . "/../src/controllers/FrontController.php";
-//include __DIR__ . "/../src/controllers/AdminController.php";
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use App\Models\Eloquent\User as User;
+
+$capsule = new Capsule;
+
+$capsule->addConnection([
+    'driver'    => 'mysql',
+    'host'      => DB_HOST,
+    'database'  => DB_NAME,
+    'username'  => DB_USER,
+    'password'  => DB_PASSWORD,
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
+]);
+
+$capsule->setAsGlobal();
+
+$capsule->bootEloquent();
+
+$users = User::all();
+foreach($users as $user) {
+    echo $user->name . '<br>';
+}
+
+$user = new User();
+$us = $user->get('tatyana@gmail.com');
+$id = $user->get('tatyana@gmail.com');
+var_dump($id->password);
+
+include __DIR__ . "/../src/models/Eloquent/DB.php";
 
 session_start();
+
+
+
+echo '<pre>';
+$capsule = new Capsule;
+print_r($capsule->getConnection()->getQueryLog());
+
+echo '<pre>';
+
+//
+//
+// function getPasswordHash($password)
+// {
+//     return $passwordHash = sha1($password . '.sdfifao38vj,');
+// }
+//
+// $ps = getPasswordHash(55555);
+// //var_dump($ps);
+//
+//
+//
+// $password = $user->getPasswordHash(55555);
+// $email = $user->get('tatyana@gmail.com')->id;
+//
+//         //var_dump($password);
+//         var_dump($email);
+//
+// function get($email)
+// {
+//     return User::where('email', '=', $email)->first();
+// }
 
 
 
@@ -68,7 +123,3 @@ if (strpos($_SERVER['REQUEST_URI'], '/') !== false) {
     $controller->index();
     return 0;
 }
-
-echo '<pre>';
-$capsule = new Capsule;
-print_r($capsule->getConnection()->getQueryLog());
