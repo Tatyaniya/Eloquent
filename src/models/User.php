@@ -23,24 +23,24 @@ class User
         return $_SESSION['user_id'];
     }
 
-    /**
-     * получаем имя текущего пользователя
-     * @param $userId
-     * @return mixed
-     */
-    public function getUserName($userId)
-    {
-        $pdo = new DB();
-
-        $query = "SELECT * FROM users WHERE id = :id";
-        $result = $pdo->connect()->prepare($query);
-        $result->execute([
-            'id' => $userId
-        ]);
-        $user = $result->fetch(PDO::FETCH_ASSOC);
-
-        return $user['name'];
-    }
+//    /**
+//     * получаем имя текущего пользователя
+//     * @param $userId
+//     * @return mixed
+//     */
+//    public function getUserName($userId)
+//    {
+//        $pdo = new DB();
+//
+//        $query = "SELECT * FROM users WHERE id = :id";
+//        $result = $pdo->connect()->prepare($query);
+//        $result->execute([
+//            'id' => $userId
+//        ]);
+//        $user = $result->fetch(PDO::FETCH_ASSOC);
+//
+//        return $user['name'];
+//    }
 
 //    /**
 //     * добавить пользователя в базу

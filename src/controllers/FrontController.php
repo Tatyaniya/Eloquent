@@ -30,11 +30,17 @@ class FrontController extends BaseController
             header('Location: /?error=1');
             exit();
         }
+
         $model = new User();
+        if($model->get($data['email'])) {
+            echo'Пользователь с таким мылом уже существует';
+            $this->render('login');
+            exit();
+        }
+
         $model->add($data);
 
-        $email = $data['email'];
-        $user = $model->get($email);
+        $user = $model->get($data['email']);
 
         $_SESSION['user_id'] = $user->id;
         header('Location: /message');
@@ -74,7 +80,6 @@ class FrontController extends BaseController
 
         $isAdmin = ($_SESSION['user_id'] == ADMIN);
 
-        echo 'blog';
         //$info = array_reverse($this->getAllMessages());
 
         $this->render('blog', [
@@ -91,7 +96,7 @@ class FrontController extends BaseController
     public function displayName()
     {
         $user = new User();
-        return $user->getUserName($_SESSION['user_id']);
+        return $user->getId($_SESSION['user_id'])->name;
     }
 
     /**

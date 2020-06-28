@@ -77,12 +77,6 @@ class User extends Model
      */
     public function add(array $data)
     {
-        if($this->get($data['email'])) {
-            //var_dump($this->get($data['email'])->id);
-            echo 'Пользователь с таким мылом уже существует';
-            exit();
-        }
-
         $userData = [
             'name' => $data['name'],
             'email' => $data['email'],

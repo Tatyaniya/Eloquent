@@ -2,7 +2,6 @@
 
 namespace App\Models\Eloquent;
 
-use App\Models\User;
 use \Illuminate\Database\Eloquent\Model as Model;
 
 class Message extends Model

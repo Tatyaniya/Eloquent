@@ -24,20 +24,8 @@ $capsule->setAsGlobal();
 
 $capsule->bootEloquent();
 
-//$users = User::all();
-//foreach($users as $user) {
-//    echo $user->name . '<br>';
-//}
-//
-//$user = new User();
-//$us = $user->get('tatyana@gmail.com');
-//$id = $user->get('tatyana@gmail.com');
-//var_dump($id->password);
-
-
-echo '<pre>';
-
-print_r($capsule->getConnection()->getQueryLog());
+//echo '<pre>';
+//print_r($capsule->getConnection()->getQueryLog());
 
 
 if (!empty($_POST) && strpos($_SERVER['REQUEST_URI'], '/login') !== false) {
