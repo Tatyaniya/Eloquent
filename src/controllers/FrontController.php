@@ -90,6 +90,7 @@ class FrontController extends BaseController
 
     /**
      * получаем все сообщения из базы вместе с именами пользователей
+     *
      * @return array
      */
     public function getAllMessages()
@@ -172,6 +173,7 @@ class FrontController extends BaseController
 
     /**
      * возвращает 20 последних сообщений 1 пользователя в json
+     *
      * @return string
      */
     public function api()
@@ -181,29 +183,30 @@ class FrontController extends BaseController
         if (!$id) {
             echo 'такого пользователя нет';
             exit();
+        } else {
+
         }
 
         $data = User::with('messages')->where('id', '=', $id)->limit(20)->get();
         $messages = $data->toArray();
-        echo '<pre>';
-        var_dump($messages);
 
-        $lastMessages = [];
+        $usermes = $messages[0];
+        if ($usermes['messages']) {
 
-        foreach ($messages as $message) {
-            foreach ($message as $mes) {
+            $lastMessages = [];
+
+            for ($i=0; $i< sizeof($usermes); $i++) {
                 $lastMessages[] = [
-                    'date' => $mes['date'],
-                    'image' => $mes['image'],
-                    'text' => $mes['text']
+                    'date' => $usermes['messages'][$i]['date'],
+                    'image' => $usermes['messages'][$i]['image'],
+                    'text' => $usermes['messages'][$i]['text']
                 ];
             }
+        } else {
+            echo 'Сообщений нет';
         }
 
         echo json_encode($lastMessages);
-
-        if (!$lastMessages) {
-            return 'Сообщений нет';
-        }
+        //echo json_encode($messages[0]['messages']);
     }
 }
