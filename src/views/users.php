@@ -22,7 +22,7 @@
 </div>
 
 <div class="users">
-    <?php if ($items) {
+    <?php if (!empty($items)) {
         foreach ($items as $user): ?>
 
             <div class="user">

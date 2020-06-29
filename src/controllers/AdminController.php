@@ -7,7 +7,10 @@ use App\Models\Eloquent\Message;
 
 class AdminController extends BaseController
 {
-
+    /**
+     * AdminController constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
         if ($_SESSION['user_id'] != ADMIN) {
@@ -15,17 +18,20 @@ class AdminController extends BaseController
         }
     }
 
+    /**
+     * выводим список порльзователей
+     */
     public function users()
     {
         $isAdmin = ($_SESSION['user_id'] == ADMIN);
 
-        $users = User::all();
+        $users = User::all()->sortBy('time');
 
         $displayAllUsers = [];
         foreach ($users as $user) {
             $displayAllUsers[] = [
                 'id' => $user->id,
-                'time' => $user->time,
+                'time' => date('Y-m-d H:i:s'),
                 'email' => $user->email,
                 'password' => $user->password,
                 'name' => $user->name
@@ -38,6 +44,11 @@ class AdminController extends BaseController
         ]);
     }
 
+    /**
+     * создаем пользователя
+     *
+     * @param array $data
+     */
     public function create(array $data)
     {
         $errors = $this->valider($data);
@@ -49,7 +60,7 @@ class AdminController extends BaseController
         $model = new User();
         if($model->get($data['email'])) {
             echo'Пользователь с таким мылом уже существует';
-            $this->render('login');
+            $this->users();
             exit();
         }
 
@@ -57,11 +68,10 @@ class AdminController extends BaseController
 
         header('Location: /users');
         exit();
-
     }
 
     /**
-     * если админ - можем удалять сообщения
+     * удаляем сообщения
      */
     public function remove()
     {
@@ -84,17 +94,18 @@ class AdminController extends BaseController
         exit();
     }
 
+    /**
+     * удаление пользователей
+     */
     public function removeuser()
     {
         $id = (int)$_GET['id'] ?? 0;
 
         $user = User::find($id);
 
-        $user->delete();
-//        var_dump($user);
-//        if ($user !== null) {
-//            $user->delete();
-//        }
+        if ($user !== null) {
+            $user->delete();
+        }
 
         header('Location: /users');
         exit();

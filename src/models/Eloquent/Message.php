@@ -33,11 +33,14 @@ class Message extends Model
      */
     public function author()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id')->withDefault([
+            'name' => 'удаленный пользователь'
+        ]);
     }
 
     /**
      * генерируем случайное имя картинке
+     *
      * @return string
      */
     public function getImageName()
@@ -55,6 +58,7 @@ class Message extends Model
 
     /**
      * сохраняем картинку в папку
+     *
      * @param string $file
      */
     public function loadImage(string $file)
@@ -67,28 +71,12 @@ class Message extends Model
 
     /**
      * находим 1 сообщение в базе
+     *
      * @param $id
      * @return mixed
      */
     public function getOneMes($id)
     {
         return self::where('id', '=', $id)->first();
-    }
-
-
-
-
-    public function getUserMes($userId, $limit = 20)
-    {
-        $pdo = new DB();
-
-        $sql = "SELECT * FROM messages LEFT JOIN users ON messages.user_id = users.id WHERE user_id = :user_id ORDER BY messages.id DESC LIMIT $limit";
-
-        $result = $pdo->connect()->prepare($sql);
-        $result->execute([
-            'user_id' => $userId
-        ]);
-
-        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }

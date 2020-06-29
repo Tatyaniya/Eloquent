@@ -33,7 +33,7 @@ class User extends Model
      */
     public function messages()
     {
-        return $this->hasMany('App\Models', 'user_id', 'id');
+        return $this->hasMany('App\Models\Eloquent\Message', 'user_id', 'id');
     }
 
     /**

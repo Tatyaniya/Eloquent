@@ -21,6 +21,7 @@ class FrontController extends BaseController
 
     /**
      * регистрация
+     *
      * @param array $data
      */
     public function register(array $data)
@@ -77,7 +78,6 @@ class FrontController extends BaseController
      */
     public function view()
     {
-
         $isAdmin = ($_SESSION['user_id'] == ADMIN);
 
         $info = $this->getAllMessages();
@@ -86,7 +86,6 @@ class FrontController extends BaseController
             'items' => $info,
             'is_admin' => $isAdmin
         ]);
-
     }
 
     /**
@@ -99,13 +98,6 @@ class FrontController extends BaseController
 
         $AllDisplayMessages = [];
         foreach ($messages as $mes) {
-
-//            if ($mes->author->getName() !== null) {
-//                $name = $mes->author->getName();
-//            } else {
-//                $name = 'Удаленный пользователь';
-//            }
-
             $AllDisplayMessages[] = [
                 'id' => $mes->id,
                 'name' => $mes->author->getName(),
@@ -144,12 +136,12 @@ class FrontController extends BaseController
     }
 
     /**
-     * добавляет сообщения
+     * добавляем сообщения
+     *
      * @param array $data
      */
     public function add(array $data)
     {
-
         if (!$data['text']) {
             echo 'Сообщение не может быть пустым';
             $this->view();
@@ -184,29 +176,33 @@ class FrontController extends BaseController
      */
     public function api()
     {
-        $userId = (int)$_GET['user_id'] ?? 0;
+        $id = (int)$_GET['id'] ?? 0;
 
-        if (!$userId) {
+        if (!$id) {
             echo 'такого пользователя нет';
             exit();
         }
 
-        $message = new Message();
-        $info = $message->getUserMes($userId, 20);
+        $data = User::with('messages')->where('id', '=', $id)->limit(20)->get();
+        $messages = $data->toArray();
+        echo '<pre>';
+        var_dump($messages);
 
         $lastMessages = [];
-        for ($i = 0; $i < sizeof($info); $i++) {
-            $lastMessages[] = [
-                'name' => $info[$i]['name'],
-                'date' => $info[$i]['date'],
-                'image' => $info[$i]['image'],
-                'text' => $info[$i]['text']
-            ];
+
+        foreach ($messages as $message) {
+            foreach ($message as $mes) {
+                $lastMessages[] = [
+                    'date' => $mes['date'],
+                    'image' => $mes['image'],
+                    'text' => $mes['text']
+                ];
+            }
         }
 
         echo json_encode($lastMessages);
 
-        if (!$info) {
+        if (!$lastMessages) {
             return 'Сообщений нет';
         }
     }
