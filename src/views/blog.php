@@ -7,18 +7,6 @@
     } ?>
 </div>
 
-<?php if ($is_admin) { ?>
-    <div class="forms__create">
-        <form method="post" action="/message/create">
-            <input name="name" type="text" placeholder="Введите имя"><br>
-            <input name="email" type="text" placeholder="Введите E-mail" required><br>
-            <input name="password" type="password" placeholder="Введите пароль" required><br>
-            <input name="password2" type="password" placeholder="Повторите пароль" required><br>
-            <button type="submit">Создать</button>
-        </form>
-    </div>
-<?php } ?>
-
 <div class="form">
     <form enctype="multipart/form-data" method="post" action="/message/add">
         <input name="image" type="file"><br>
@@ -29,7 +17,7 @@
 </div>
 <div class="messages">
     <?php if (!empty($items)) {
-        foreach ($items as $message):?>
+        foreach ($items as $message): ?>
 
             <div class="message">
 
@@ -46,7 +34,8 @@
                     <?php } ?>
                 </div>
 
-                <?php if (!empty($message['image'])) { ?>
+                <?php if (!empty($message['image'])) {
+                    var_dump($message['image'])?>
                     <div class="message__img">
                         <img src="images/<?php echo $message['image']; ?>">
                     </div>
@@ -74,23 +63,6 @@
 </div>
 
 <style>
-    .forms__create {
-        width: 230px;
-    }
-
-    .forms__create input {
-        width: 100%;
-        height: 30px;
-        margin-bottom: 10px;
-        padding-left: 7px;
-    }
-
-    .forms__create button {
-        width: 100%;
-        height: 35px;
-        font-weight: bold;
-    }
-
     .form {
         padding: 40px;
     }
@@ -155,7 +127,8 @@
 
     .message__img {
         width: 200px;
-        height: auto;
+        max-height: 260px;
+        overflow: hidden;
         margin-bottom: 20px;
     }
 

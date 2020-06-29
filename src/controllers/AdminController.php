@@ -45,13 +45,15 @@ class AdminController extends BaseController
         $model = new Message();
 
         $message = $model->getOneMes($id);
+        echo '<pre>';
+        var_dump($message);
         if (!empty($message)) {
             $file = 'images/' . $message['image'];
 
             if (file_exists($file)) {
                 unlink($file);
             }
-            $model->delete($id);
+            $model->remove($id);
         }
 
         header('Location: /message');

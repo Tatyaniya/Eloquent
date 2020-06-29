@@ -58,6 +58,11 @@ class User extends Model
         return self::find($id);
     }
 
+    public function getName()
+    {
+        return $this->name;
+    }
+
     /**
      * генерация хеша пароля
      *
@@ -68,7 +73,6 @@ class User extends Model
     {
         return $passwordHash = sha1($password . '.sdfifao38vj,');
     }
-
 
     /**
      * добавляем пользователя в базу

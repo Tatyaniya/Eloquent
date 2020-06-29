@@ -80,10 +80,11 @@ class FrontController extends BaseController
 
         $isAdmin = ($_SESSION['user_id'] == ADMIN);
 
-        //$info = array_reverse($this->getAllMessages());
+        $message = new Message();
+        $info = $this->getAllMessages();
 
         $this->render('blog', [
-            //'items' => $info,
+            'items' => $info,
             'is_admin' => $isAdmin
         ]);
 
@@ -105,26 +106,17 @@ class FrontController extends BaseController
      */
     public function getAllMessages()
     {
-        $message = new Message();
-
-        $messagesAll = $message->getMessages();
-        $usersALL = $message->getUsers();
+        $messages = Message::with('author')->orderBy('id', 'desc')->get();
 
         $AllDisplayMessages = [];
-        for ($i = 0; $i < sizeof($messagesAll); $i++) {
-
-            for ($j = 0; $j < sizeof($usersALL); $j++) {
-
-                if ($messagesAll[$i]['user_id'] === $usersALL[$j]['id']) {
-                    $AllDisplayMessages[] = [
-                        'id' => $messagesAll[$i]['id'],
-                        'name' => $usersALL[$j]['name'],
-                        'date' => $messagesAll[$i]['date'],
-                        'image' => $messagesAll[$i]['image'],
-                        'text' => $messagesAll[$i]['text']
-                    ];
-                }
-            }
+        foreach ($messages as $mes) {
+            $AllDisplayMessages[] = [
+                'id' => $mes->id,
+                'name' => $mes->author->getName(),
+                'date' => $mes->date,
+                'image' => $mes->image,
+                'text' => $mes->text
+            ];
         }
 
         return $AllDisplayMessages;
