@@ -180,33 +180,31 @@ class FrontController extends BaseController
     {
         $id = (int)$_GET['id'] ?? 0;
 
-        if (!$id) {
-            echo 'такого пользователя нет';
-            exit();
-        } else {
+        $user = new User();
 
-        }
+        if ($user->getId($id)) {
+            $data = $user->with('messages')->where('id', '=', $id)->limit(20)->first()->toArray();
 
-        $data = User::with('messages')->where('id', '=', $id)->limit(20)->get();
-        $messages = $data->toArray();
+            if ($data['messages']) {
 
-        $usermes = $messages[0];
-        if ($usermes['messages']) {
+                $lastMessages = [];
 
-            $lastMessages = [];
-
-            for ($i=0; $i< sizeof($usermes); $i++) {
-                $lastMessages[] = [
-                    'date' => $usermes['messages'][$i]['date'],
-                    'image' => $usermes['messages'][$i]['image'],
-                    'text' => $usermes['messages'][$i]['text']
-                ];
+                for ($i=0; $i< sizeof($data); $i++) {
+                    $lastMessages[] = [
+                        'date' => $data['messages'][$i]['date'],
+                        'image' => $data['messages'][$i]['image'],
+                        'text' => $data['messages'][$i]['text']
+                    ];
+                }
+            } else {
+                echo 'Сообщений нет';
             }
-        } else {
-            echo 'Сообщений нет';
-        }
 
-        echo json_encode($lastMessages);
-        //echo json_encode($messages[0]['messages']);
+            echo json_encode($lastMessages);
+            //echo json_encode($messages['messages']);
+        } else {
+            echo 'Такого пользователя нет';
+            exit();
+        }
     }
 }
