@@ -12,7 +12,7 @@ use \Illuminate\Database\Eloquent\Model as Model;
  * @property-read $name
  * @property-read $email
  * @property-read $password
- * @property-read $date
+ * @property-read $time
  */
 class User extends Model
 {
@@ -85,7 +85,7 @@ class User extends Model
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $this->getPasswordHash($data['password']),
-            'date' => date('Y-m-d H:i:s')
+            'time' => date('Y-m-d H:i:s')
         ];
 
         $user = new User($userData);

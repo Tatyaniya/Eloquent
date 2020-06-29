@@ -80,7 +80,6 @@ class FrontController extends BaseController
 
         $isAdmin = ($_SESSION['user_id'] == ADMIN);
 
-        $message = new Message();
         $info = $this->getAllMessages();
 
         $this->render('blog', [
@@ -91,17 +90,7 @@ class FrontController extends BaseController
     }
 
     /**
-     * выводим имя пользователя над формой
-     * @return mixed
-     */
-    public function displayName()
-    {
-        $user = new User();
-        return $user->getId($_SESSION['user_id'])->name;
-    }
-
-    /**
-     * получаем все сообщения из базы вместе с имнами пользователей
+     * получаем все сообщения из базы вместе с именами пользователей
      * @return array
      */
     public function getAllMessages()
@@ -110,6 +99,13 @@ class FrontController extends BaseController
 
         $AllDisplayMessages = [];
         foreach ($messages as $mes) {
+
+//            if ($mes->author->getName() !== null) {
+//                $name = $mes->author->getName();
+//            } else {
+//                $name = 'Удаленный пользователь';
+//            }
+
             $AllDisplayMessages[] = [
                 'id' => $mes->id,
                 'name' => $mes->author->getName(),
@@ -123,27 +119,6 @@ class FrontController extends BaseController
     }
 
     /**
-     * добавляет сообщения
-     * @param array $data
-     */
-    public function add(array $data)
-    {
-        $userId = $_SESSION['user_id'];
-
-        $message = new Message();
-
-        $img = $this->addImage();
-        $message->loadImage($img);
-        $file = $message->getImage();
-
-
-        $message->addMes($userId, $data, $file);
-
-        header('Location: /message');
-        exit();
-    }
-
-    /**
      * берем картинку из формы
      * @return mixed
      */
@@ -152,6 +127,45 @@ class FrontController extends BaseController
         if (!empty($_FILES['image']['tmp_name'])) {
             return $_FILES['image']['tmp_name'];
         }
+    }
+
+    /**
+     * если картинка добавлена, создаем ей имя и кладем ее в папку
+     *
+     * @return mixed
+     */
+    public function imageName(){
+        if ($this->addImage()) {
+            $img = $this->addImage();
+            $message = new Message();
+            $message->loadImage($img);
+            return $message->getImage();
+        }
+    }
+
+    /**
+     * добавляет сообщения
+     * @param array $data
+     */
+    public function add(array $data)
+    {
+
+        if (!$data['text']) {
+            echo 'Сообщение не может быть пустым';
+            $this->view();
+            exit();
+        }
+
+        $message = new Message([
+            'user_id' => $_SESSION['user_id'],
+            'text' => $data['text'],
+            'image' => $this->imageName(),
+            'date' => date('Y-m-d H:i:s')
+        ]);
+        $message->save();
+
+        header('Location: /message');
+        exit();
     }
 
     /**

@@ -48,7 +48,7 @@ if (!empty($_POST) && strpos($_SERVER['REQUEST_URI'], '/message/add') !== false)
 
 if (strpos($_SERVER['REQUEST_URI'], '/message/delete') !== false) {
     $controller = new \App\Controllers\AdminController();
-    $controller->delete();
+    $controller->remove();
     return 0;
 }
 
@@ -67,6 +67,24 @@ if (strpos($_SERVER['REQUEST_URI'], '/message') !== false) {
 if (strpos($_SERVER['REQUEST_URI'], '/api') !== false) {
     $controller = new \App\Controllers\FrontController();
     $controller->api();
+    return 0;
+}
+
+if (strpos($_SERVER['REQUEST_URI'], '/users') !== false) {
+    $controller = new \App\Controllers\AdminController();
+    $controller->users();
+    return 0;
+}
+
+if (strpos($_SERVER['REQUEST_URI'], '/create/user') !== false) {
+    $controller = new \App\Controllers\AdminController();
+    $controller->create($_POST);
+    return 0;
+}
+
+if (strpos($_SERVER['REQUEST_URI'], '/user/delete') !== false) {
+    $controller = new \App\Controllers\AdminController();
+    $controller->removeuser();
     return 0;
 }
 

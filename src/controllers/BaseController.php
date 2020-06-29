@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Config;
+use App\Models\Eloquent\User;
 
 
 class BaseController
@@ -25,6 +26,17 @@ class BaseController
             $errors[] = "Пароли не совпадают";
         }
         return $errors;
+    }
+
+
+    /**
+     * выводим имя пользователя над формой
+     * @return mixed
+     */
+    public function displayName()
+    {
+        $user = new User();
+        return $user->getId($_SESSION['user_id'])->name;
     }
 
     /**

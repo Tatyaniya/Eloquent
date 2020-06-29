@@ -1,6 +1,11 @@
 <div class="link-out">
     <a href="/logout">Выйти</a>
 </div>
+<?php if ($is_admin) { ?>
+    <div class="link-user">
+        <a href="/users">Перейти к редактированию пользователей</a>
+    </div>
+<?php } ?>
 <div class="name">
     Вы вошли как: <?php if (!empty($this->displayName())) {
         echo $this->displayName();
@@ -34,8 +39,7 @@
                     <?php } ?>
                 </div>
 
-                <?php if (!empty($message['image'])) {
-                    var_dump($message['image'])?>
+                <?php if (!empty($message['image'])) { ?>
                     <div class="message__img">
                         <img src="images/<?php echo $message['image']; ?>">
                     </div>
@@ -84,12 +88,14 @@
         font-weight: bold;
     }
 
-    .link-out {
+    .link-out,
+    .link-user {
         padding-top: 10px;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }
 
-    .link-out a {
+    .link-out a,
+    .link-user a {
         font-family: Arial, sans-serif;
         font-weight: bold;
         color: #000;
@@ -97,7 +103,8 @@
         border-bottom: 1px solid transparent;
     }
 
-    .link-out a:hover {
+    .link-out a:hover,
+    .link-user a:hover {
         border-bottom: 1px solid #000;
         transition: all 0.3s;
     }

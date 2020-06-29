@@ -12,18 +12,18 @@ use \Illuminate\Database\Eloquent\Model as Model;
  * @property-read $user_id
  * @property-read $text
  * @property-read $image
- * @property-read $create_at
+ * @property-read $date
  * @property-read User $author
  */
 class Message extends Model
 {
     public $table = 'messages';
-    protected $primaryKey = 'id';
+    public $timestamps = false;
     protected $fillable = [
         'user_id',
         'text',
         'image',
-        'create_at'
+        'date'
     ];
 
     /**
@@ -46,6 +46,14 @@ class Message extends Model
     }
 
     /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
      * сохраняем картинку в папку
      * @param string $file
      */
@@ -57,57 +65,6 @@ class Message extends Model
         }
     }
 
-    public function addMes($userId, array $data, $file = 0)
-    {
-        $pdo = new DB();
-
-        $this->image = $file;
-
-        $this->text = $data['text'];
-
-        $query = ("INSERT INTO messages (user_id, `date`, text, image) VALUES (:user_id, :date, :text, :image)");
-        $result = $pdo->connect()->prepare($query);
-        $result->execute([
-            'user_id' => $userId,
-            'date' => date('Y-m-d H:i:s'),
-            'text' => $this->text,
-            'image' => $this->image
-        ]);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * получаем все сообщения из базы
-     *
-     * @return Message[]|\Illuminate\Database\Eloquent\Collection
-     */
-    public function getMessages()
-    {
-        return Message::all();
-    }
-
-    /**
-     * удаление сообщений
-     *
-     * @param $id
-     * @return bool|null
-     */
-    public function remove($id)
-    {
-        $user = User::find($id);
-        if ($user !== null) {
-            $user->delete();
-        }
-        //return User::find($id)->delete();
-    }
-
     /**
      * находим 1 сообщение в базе
      * @param $id
@@ -116,5 +73,22 @@ class Message extends Model
     public function getOneMes($id)
     {
         return self::where('id', '=', $id)->first();
+    }
+
+
+
+
+    public function getUserMes($userId, $limit = 20)
+    {
+        $pdo = new DB();
+
+        $sql = "SELECT * FROM messages LEFT JOIN users ON messages.user_id = users.id WHERE user_id = :user_id ORDER BY messages.id DESC LIMIT $limit";
+
+        $result = $pdo->connect()->prepare($sql);
+        $result->execute([
+            'user_id' => $userId
+        ]);
+
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }
