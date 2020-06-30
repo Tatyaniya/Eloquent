@@ -1,4 +1,5 @@
-# PHP-MVC-Blog + Eloquent LoftSchool
+# PHP-MVC-Blog + Eloquent 
+#LoftSchool
     Задание #6.1
    
     Перепишите работу с базой данных в проекте из ВП №1 с использованием Eloquent ORM.
